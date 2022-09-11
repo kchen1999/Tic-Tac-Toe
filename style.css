@@ -1,0 +1,31 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #06b6d4;
+}
+
+.game-board {
+    height: 480px;
+    width: 480px;  
+    background-color: #a5f3fc;
+    display: grid;
+    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+    border: solid;
+    border-color: #06b6d4;
+}
+
+.game-board-sq {
+    border: solid;
+    border-color: #06b6d4;
+    font-family: 'Montserrat', sans-serif;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
