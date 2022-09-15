@@ -23,7 +23,7 @@ const Player = (playerSign) => {
 const displayController = (() => {
     const player1 = Player('X'); 
     const player2 = Player('O');
-    let playerTurn = 'X'; 
+    let playerTurn = 'X';
     const board = document.querySelector('.game-board');
     const resetBtn = document.querySelector('button'); 
     const checkLegalMove = (index) => {
@@ -72,6 +72,7 @@ const displayController = (() => {
 
 
     const startGame = () => {
+        setPlayerField();
         board.addEventListener('click', e => {
             const clickedIndex = [...e.target.parentNode.children].indexOf(e.target); 
             if(checkLegalMove(clickedIndex)) {
@@ -98,6 +99,7 @@ const displayController = (() => {
                 gameBoard.updateBoard(i, null); 
             }
             playerTurn = 'X'; 
+            setPlayerField();
             [...board.children].forEach((gameSquare) => gameSquare.textContent = '');
         }  
         );

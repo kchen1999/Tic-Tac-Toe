@@ -62,4 +62,8 @@ body {
     justify-content: center;
 }
 
+.game-board-sq:hover {
+    background-color:  #cffafe;
+}
+
 
