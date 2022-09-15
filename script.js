@@ -25,6 +25,7 @@ const displayController = (() => {
     const player2 = Player('O');
     let playerTurn = 'X'; 
     const board = document.querySelector('.game-board');
+    const resetBtn = document.querySelector('button'); 
     const checkLegalMove = (index) => {
         if(gameBoard.getBoard()[index] == null) {
             return true; 
@@ -54,26 +55,52 @@ const displayController = (() => {
         !gameBoard.getBoard().includes(null);
     ;
 
+    const setPlayerField = () => {
+        const playerField = document.querySelector('.header');
+        playerField.textContent = `Player ${playerTurn}'s turn`;
+    }
+
+    const setWinningMessage = () => {
+        const playerField = document.querySelector('.header');
+        playerField.textContent = `Player ${playerTurn} has won!`;
+    }
+
+    const setDrawMessage = () => {
+        const playerField = document.querySelector('.header');
+        playerField.textContent = "Game is a draw!";
+    }
+
+
     const startGame = () => {
         board.addEventListener('click', e => {
             const clickedIndex = [...e.target.parentNode.children].indexOf(e.target); 
-            if(playerTurn == 'X' && checkLegalMove(clickedIndex)) {
-                gameBoard.updateBoard(clickedIndex, 'X');
-                e.target.textContent = 'X'; 
-                if(isGameOver(clickedIndex) || isDraw()) {
-                    console.log("Game Over");
+            if(checkLegalMove(clickedIndex)) {
+                gameBoard.updateBoard(clickedIndex, playerTurn);
+                e.target.textContent = playerTurn; 
+                if(isGameOver(clickedIndex)) {
+                    setWinningMessage();
                 }
-                playerTurn = '0'; 
-            }
-            else if(playerTurn == '0' && checkLegalMove(clickedIndex)) {
-                gameBoard.updateBoard(clickedIndex, '0');
-                e.target.textContent = '0'; 
-                if(isGameOver(clickedIndex) || isDraw()) {
-                    console.log("Game Over");
+                else if(isDraw()) {
+                    setDrawMessage();
                 }
-                playerTurn = 'X'; 
+                else if(playerTurn === 'X') {
+                    playerTurn = '0';
+                    setPlayerField(); 
+                }
+                else {
+                    playerTurn = 'X'; 
+                    setPlayerField(); 
+                }
             }
         });
+        resetBtn.addEventListener('click', () => {
+            for(let i = 0; i < 9; i++) {
+                gameBoard.updateBoard(i, null); 
+            }
+            playerTurn = 'X'; 
+            [...board.children].forEach((gameSquare) => gameSquare.textContent = '');
+        }  
+        );
     };
     return {
         startGame
