@@ -24,8 +24,8 @@ const displayController = (() => {
     const player1 = Player('X'); 
     const player2 = Player('O');
     let playerTurn = 'X';
-    const board = document.querySelector('.game-board');
     const resetBtn = document.querySelector('button'); 
+    const boardSquares = document.querySelectorAll('.game-board-sq')
     const checkLegalMove = (index) => {
         if(gameBoard.getBoard()[index] == null) {
             return true; 
@@ -70,16 +70,14 @@ const displayController = (() => {
         playerField.textContent = "Game is a draw!";
     }
 
-
-    const startGame = () => {
-        setPlayerField();
-        board.addEventListener('click', e => {
-            const clickedIndex = [...e.target.parentNode.children].indexOf(e.target); 
+    const playRound = (e) => {
+        const clickedIndex = [...e.target.parentNode.children].indexOf(e.target); 
             if(checkLegalMove(clickedIndex)) {
                 gameBoard.updateBoard(clickedIndex, playerTurn);
                 e.target.textContent = playerTurn; 
                 if(isGameOver(clickedIndex)) {
                     setWinningMessage();
+                    [...boardSquares].forEach((gameSquare) => gameSquare.removeEventListener('click', playRound));
                 }
                 else if(isDraw()) {
                     setDrawMessage();
@@ -93,14 +91,20 @@ const displayController = (() => {
                     setPlayerField(); 
                 }
             }
-        });
+    }
+
+    
+    const startGame = () => {
+        setPlayerField();
+        [...boardSquares].forEach((gameSquare) => gameSquare.addEventListener('click', playRound));
         resetBtn.addEventListener('click', () => {
             for(let i = 0; i < 9; i++) {
                 gameBoard.updateBoard(i, null); 
             }
             playerTurn = 'X'; 
             setPlayerField();
-            [...board.children].forEach((gameSquare) => gameSquare.textContent = '');
+            [...boardSquares].forEach((gameSquare) => gameSquare.textContent = '');
+            [...boardSquares].forEach((gameSquare) => gameSquare.addEventListener('click', playRound));
         }  
         );
     };
